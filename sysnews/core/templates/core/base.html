@@ -9,12 +9,15 @@
   <meta name="author" content="">
 
   <title>Almanaque | {% block title %}{% endblock title %}</title>
-
+  {% load static %}
   <!-- Bootstrap core CSS -->
-  <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="{% static 'core/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
 
   <!-- Custom styles for this template -->
-  <link href="css/blog-home.css" rel="stylesheet">
+  <link href="{% static 'core/css/blog-home.css' %}" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="{% static 'core/css/blog-post.css' %}" rel="stylesheet">
 
 </head> 
 
@@ -48,18 +51,21 @@
   </nav>
 
   <!-- Page Content -->
+  
+
+  
   <div class="container">
 
+    {% block content %}{% endblock content %}
+
+    {% comment %}
     <div class="row">
 
       <!-- Blog Entries Column -->
       
-      {% block content %}
-        
-      {% endblock content %}
+
         
       
-      {% comment %}
       <div class="col-md-8">
 
         <h1 class="my-4">Page Heading
@@ -119,7 +125,7 @@
         </ul>
 
       </div>
-      {% endcomment %}
+  
         
 
 
@@ -186,6 +192,8 @@
 
     </div>
     <!-- /.row -->
+    {% endcomment %}
+
 
   </div>
   <!-- /.container -->
@@ -199,8 +207,8 @@
   </footer>
 
   <!-- Bootstrap core JavaScript -->
-  <script src="vendor/jquery/jquery.min.js"></script>
-  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="{% static 'core/vendor/jquery/jquery.min.js' %}"></script>
+  <script src="{% static 'core/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
 </body>
 
 </html>
