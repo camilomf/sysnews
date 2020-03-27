@@ -16,11 +16,12 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
+from news.urls import news_patterns
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('core.urls')),
-    path('news/', include('news.urls')),
+    path('news/', include(news_patterns)),
 ]
 
 if settings.DEBUG:

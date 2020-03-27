@@ -25,14 +25,14 @@
   <!-- Navigation -->
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
     <div class="container">
-      <a class="navbar-brand" href="#">Start Bootstrap</a>
+      <a class="navbar-brand" href="{% url 'home' %}">Almanaque</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarResponsive">
         <ul class="navbar-nav ml-auto">
           <li class="nav-item active">
-            <a class="nav-link" href="#">Home
+            <a class="nav-link" href="{% url 'home' %}">Home
               <span class="sr-only">(current)</span>
             </a>
           </li>
@@ -51,9 +51,7 @@
   </nav>
 
   <!-- Page Content -->
-  
 
-  
   <div class="container">
 
     {% block content %}{% endblock content %}
@@ -194,7 +192,6 @@
     <!-- /.row -->
     {% endcomment %}
 
-
   </div>
   <!-- /.container -->
 
@@ -209,6 +206,30 @@
   <!-- Bootstrap core JavaScript -->
   <script src="{% static 'core/vendor/jquery/jquery.min.js' %}"></script>
   <script src="{% static 'core/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+  <!-- <script src="{% static 'core/js/bootstrap.min.js' %}"></script> -->
+  <script>
+    function setInputDate(_id){
+      var _dat = document.querySelector(_id);
+      var hoy = new Date(),
+          d = hoy.getDate(),
+          m = hoy.getMonth()+1, 
+          y = hoy.getFullYear(),
+          data;
+
+      if(d < 10){
+          d = "0"+d;
+      };
+      if(m < 10){
+          m = "0"+m;
+      };
+
+      data = y+"-"+m+"-"+d;
+      console.log(data);
+      _dat.value = data;
+    };
+    // setInputDate("#calendar");
+    setInputDate("#publication_date");
+    </script>
 </body>
 
 </html>

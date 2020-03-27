@@ -1,31 +1,35 @@
-{% extends 'core//base.html' %}
+{% extends 'core/base.html' %}
 
 {% block title %}
 Home
 {% endblock title %}
 
 {% block content %}
+{% include 'news/includes/news_menu.html' %}
 <div class="row">
 
   <!-- Blog Entries Column -->  
   <div class="col-md-8">
 
-    <h1 class="my-4">Page Heading
+    <!-- <h1 class="my-4">Page Heading
       <small>Secondary Text</small>
-    </h1>
+    </h1> -->
 
     <!-- Blog Post -->
     {% for news in latest_news %}
-    <div class="card mb-4">
+    <div class="card mb-4 mt-3">
       <img class="card-img-top" src="{{ news.image.url }}" alt="Card image cap">
       <div class="card-body">
         <h2 class="card-title">{{ news.title }}</h2>
         <p class="card-text">{{ news.headline }}</p>
-        <a href="#" class="btn btn-primary">Read More &rarr;</a>
+        <a href="{% url 'news:detail' news.id news.title|slugify %}" class="btn btn-primary">Read More &rarr;</a>
       </div>
-      <div class="card-footer text-muted">
-        Publicado el {{ news.publication_date }} por 
-        <a href="#">{{ news.editor }}</a>
+      <div class="card-footer text-muted d-flex justify-content-between align-items-center">
+        <div>
+          Publicado el {{ news.publication_date }} por 
+          <a href="#">{{ news.editor }}</a> 
+        </div>
+        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#eliminar">eliminar noticia</button>
       </div>
     </div>
     {% endfor %}
@@ -42,7 +46,29 @@ Home
 
   </div>
 
-    
+  <!-- Eliminar -->
+  <div id="eliminar" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Noticia (delete)</h4>
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <form role="form" method="post" action="{% url 'news:delete' news.id %}" enctype="multipart/form-data">{% csrf_token %}
+          <div class="modal-body">
+            <p>¿Estás seguro de que quieres borrar noticia {{ news.title }}?</p>
+          </div>
+          <div class="modal-footer">
+              <button type="submit" class="btn btn-danger"><span class="fa fa-save"></span> Sí</button>
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+          </div>
+        </form>
+       
+        </div>
+      </div>
+    </div> 
 
 
   <!-- Sidebar Widgets Column -->
