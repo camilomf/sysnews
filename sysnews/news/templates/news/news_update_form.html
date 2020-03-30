@@ -6,13 +6,14 @@
 
 {% block content %}
 <div class="row">
-
+  <form method="post" action="" enctype="multipart/form-data">{% csrf_token %}
     <!-- Post Content Column -->
     <div class="col-lg-12">
+      
 
-        <p class="mt-4 lead">{{ news.country.name }}</p>
+        <p class="mt-4 lead">{{ form.country }}</p>
       <!-- Title -->
-      <h1 class="mt-1" align="justify">{{ news.title }}</h1>
+      <h1 class="mt-1" align="justify">{{ form.title }}</h1>
 
       <!-- Author -->
       <p class="lead">
@@ -23,43 +24,45 @@
       <hr>
 
       <!-- Date/Time -->
-      <p>Publicado el {{ news.publication_date }}</p>
+      <!-- <p>Publicado el {{ news.publication_date }}</p> -->
+      <input type="date" name="publication_date" class="form-control-file mt-3" id="publication_date" value="{{ news.publication_date|date:'m-d-Y' }}">
 
       <hr>
 
       <!-- Preview Image -->
       <img class="img-fluid rounded" style="display:flex; margin:0 auto;" width="900" height="300" src="{{ news.image.url }}" alt="...">
-
+      <input type="file" name="image" class="form-control-file mt-3" id="image">
       <hr>
 
       <!-- Post Content -->
       <p class="lead" align="justify">Tags: 
-        {% for tag in news.tags.all %}
-        {{ tag }}{% if not forloop.last %},{% endif %}          
-        {% endfor %}
+        {{ form.tags }}
       </p>
-
       
       <blockquote class="blockquote">
-        <p class="mb-0" align="justify">{{ news.headline }}</p>
+        <p class="mb-0" align="justify">{{ form.headline }}</p>
       </blockquote>
 
-      <p align="justify">{{ news.explanation|linebreaksbr }}</p>
+      <p align="justify">{{ form.explanation }}</p>
 
       <hr>
 
       <blockquote class="blockquote">
         <footer class="blockquote-footer">
-          <cite title="Source Title">{{ news.url }}</cite>
+          <cite title="Source Title">{{ form.url }}</cite>
           <p class="lead">
             Fuente: 
-          <label>{{ news.source.name }}</label>
+          <label>{{ form.source }}</label>
           </p>
         </footer>
     </blockquote>
 
-    <a href="{% url 'news:update' news.id %}"><button class="btn btn-warning">Editar</button></a>
+    <button type="submit" class="btn btn-success">Guardar</button>
+    <a href="{% url 'home' %}" class="btn btn-secondary">Atrás</a>
+    </form>
+
     <hr>
+
     </div>
 
     {% comment %}
@@ -124,6 +127,7 @@
   
       </div>
     {% endcomment %}
+
 
     
   </div>

@@ -36,9 +36,8 @@
                 <span aria-hidden="true">&times;</span>
             </button>
         </div>
-        <form id="addNews" method="post" action="{% url 'news:create' %}" enctype="multipart/form-data">
+        <form id="addNews" method="post" action="{% url 'news:create' %}" enctype="multipart/form-data">{% csrf_token %}
           <div class="modal-body">
-            {% csrf_token %}
             <div class="form-group">
               <label for="tags">Tags</label>
                 <div class="row">

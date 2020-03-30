@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.shortcuts import redirect
+from django.shortcuts import get_object_or_404
 from django.urls import reverse, reverse_lazy
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
@@ -8,6 +9,7 @@ from django.views.generic import View
 from django.http import JsonResponse
 from .models import News
 from .forms import NewsForm
+from django.utils.text import slugify
 
 # Create your views here.
 
@@ -25,8 +27,18 @@ class CreateNews(CreateView):
         instance = form.save(commit=False)
         instance.editor = self.request.user
         instance.save()
+        form.save_m2m()
         # messages.success(request, "Successfully Created")
         return redirect('home')
+
+class NewsUpdate(UpdateView):
+    model = News
+    form_class = NewsForm
+    template_name_suffix = '_update_form'
+
+    def get_success_url(self):
+        news = get_object_or_404(News, pk=self.kwargs['pk'])
+        return reverse("news:detail", args=(news.id,slugify(news.title)))
 
 class DeleteNews(DeleteView):
     model = News

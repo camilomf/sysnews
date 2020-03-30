@@ -29,9 +29,37 @@ Home
           Publicado el {{ news.publication_date }} por 
           <a href="#">{{ news.editor }}</a> 
         </div>
-        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#eliminar">eliminar noticia</button>
+        <div>
+          <a href="{% url 'news:update' news.id %}"><button class="btn btn-warning">Editar</button></a>
+          <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#eliminar">Eliminar</button>
+        </div>
       </div>
     </div>
+
+     <!-- Eliminar -->
+  <div id="eliminar" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Noticia (delete)</h4>
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <form role="form" method="post" action="{% url 'news:delete' news.id %}">{% csrf_token %}
+          <div class="modal-body">
+            <p>¿Estás seguro de que quieres borrar noticia {{ news.title }}?</p>
+          </div>
+          <div class="modal-footer">
+              <button type="submit" class="btn btn-danger"><span class="fa fa-save"></span> Sí</button>
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+          </div>
+        </form>
+       
+        </div>
+      </div>
+    </div> 
+
     {% endfor %}
 
     <!-- Pagination -->
@@ -46,29 +74,7 @@ Home
 
   </div>
 
-  <!-- Eliminar -->
-  <div id="eliminar" class="modal fade" role="dialog">
-    <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h4 class="modal-title">Noticia (delete)</h4>
-          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <form role="form" method="post" action="{% url 'news:delete' news.id %}" enctype="multipart/form-data">{% csrf_token %}
-          <div class="modal-body">
-            <p>¿Estás seguro de que quieres borrar noticia {{ news.title }}?</p>
-          </div>
-          <div class="modal-footer">
-              <button type="submit" class="btn btn-danger"><span class="fa fa-save"></span> Sí</button>
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
-          </div>
-        </form>
-       
-        </div>
-      </div>
-    </div> 
+ 
 
 
   <!-- Sidebar Widgets Column -->
@@ -114,6 +120,8 @@ Home
     </div>
 
   </div>
+  
+
 
 </div>
 <!-- /.row -->
