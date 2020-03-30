@@ -7,8 +7,11 @@
       <div class="collapse navbar-collapse" id="nep">
         <ul class="navbar-nav mr-auto">
           <li class="nav-item">
-            <a class="nav-link">
-              <button type="button"  class="btn btn-outline-success" data-toggle="modal" data-target="#agregar">
+            <a href="{% url 'news:create' %}" class="nav-link">
+              <!-- <button type="button"  class="btn btn-outline-success" data-toggle="modal" data-target="#agregar">
+                Agregar Noticia
+              </button> -->
+              <button class="btn btn-outline-success">
                 Agregar Noticia
               </button>
             </a>
@@ -50,52 +53,52 @@
                     </button>
                   </div>
                 </div>
-              </div>
-              <div class="form-group">
-                <label for="fuente">Fuente</label>
-                <div class="row">
-                  <div class="col-9">
-                    {{ form_news.source }}
-                  </div>
-                  <div class="col-3">
-                    <button type="button"  class="btn btn-outline-success" data-toggle="modal" data-target="#add_fuente" data-dismiss="modal">
-                      Agregar Fuente
-                    </button>
-                  </div>
+            </div>
+            <div class="form-group">
+              <label for="fuente">Fuente</label>
+              <div class="row">
+                <div class="col-9">
+                  {{ form_news.source }}
+                </div>
+                <div class="col-3">
+                  <button type="button"  class="btn btn-outline-success" data-toggle="modal" data-target="#add_fuente" data-dismiss="modal">
+                    Agregar Fuente
+                  </button>
                 </div>
               </div>
-              <div class="form-group">
-                <label for="url">URL</label>
-                {{ form_news.url }}
-              </div>
-              <div class="form-group">
-                <label for="titulo">Título de la noticia</label>
-                {{ form_news.title }}
-              </div>
-              <div class="form-group">
-                <label for="imagen">Imagen</label>
-                {{ form_news.image }}
-              </div>
-              <div class="form-group">
-                <label for="encabezado">Encabezado de la noticia</label>
-              {{ form_news.headline }}
-              </div>
-              <div class="form-group">
-                <label for="cuerpo">Cuerpo de la noticia</label>
-                {{ form_news.explanation }}
-              </div>
-              <div class="form-group">
-                <label for="hash">HASH</label>
-                {{ form_news.hash_news }}
-              </div>
-              <div class="form-group">
-                <label for="publication_date">Fecha de publicación</label>
-                <input type="date" name="publication_date" id="publication_date" class="form-control">
-              </div>
-              <div class="form-group">
-                <label for="imagen">País</label>
-                {{ form_news.country }}
-              </div>
+            </div>
+            <div class="form-group">
+              <label for="url">URL</label>
+              {{ form_news.url }}
+            </div>
+            <div class="form-group">
+              <label for="titulo">Título de la noticia</label>
+              {{ form_news.title }}
+            </div>
+            <div class="form-group">
+              <label for="imagen">Imagen</label>
+              {{ form_news.image }}
+            </div>
+            <div class="form-group">
+              <label for="encabezado">Encabezado de la noticia</label>
+            {{ form_news.headline }}
+            </div>
+            <div class="form-group">
+              <label for="cuerpo">Cuerpo de la noticia</label>
+              {{ form_news.explanation }}
+            </div>
+            <div class="form-group">
+              <label for="hash">HASH</label>
+              {{ form_news.hash_news }}
+            </div>
+            <div class="form-group">
+              <label for="publication_date">Fecha de publicación</label>
+              <input type="date" name="publication_date" id="publication_date" class="form-control">
+            </div>
+            <div class="form-group">
+              <label for="imagen">País</label>
+              {{ form_news.country }}
+            </div>
             <button class="btn btn-primary form-control" type="submit">SUBMIT</button>
           </div>
         </form>
@@ -173,5 +176,6 @@
 </div>
 
 <script>
+
 
 </script>

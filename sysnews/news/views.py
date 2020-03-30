@@ -8,7 +8,7 @@ from django.views.generic.list import ListView
 from django.views.generic import View
 from django.http import JsonResponse
 from .models import News
-from .forms import NewsForm
+from .forms import NewsForm, SourceForm, TagsForm
 from django.utils.text import slugify
 
 # Create your views here.
@@ -21,7 +21,7 @@ class NewsListView(ListView):
 
 class CreateNews(CreateView):
     form_class = NewsForm
-    # template_name = 'noticia/noticia_list.html'
+    template_name = 'news/news_create.html'
  
     def form_valid(self, form):
         instance = form.save(commit=False)
@@ -30,6 +30,12 @@ class CreateNews(CreateView):
         form.save_m2m()
         # messages.success(request, "Successfully Created")
         return redirect('home')
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['form_source'] = SourceForm
+        context['form_tags'] = TagsForm
+        return context
 
 class NewsUpdate(UpdateView):
     model = News
@@ -43,3 +49,17 @@ class NewsUpdate(UpdateView):
 class DeleteNews(DeleteView):
     model = News
     success_url = reverse_lazy('home')    
+
+### Source
+
+class SourceCreate (CreateView):
+    form_class = SourceForm
+    success_url = reverse_lazy('news:create')    
+    # template_name = 'news/news_create.html'
+ 
+### Tags
+
+class TagsCreate (CreateView):
+    form_class = TagsForm
+    success_url = reverse_lazy('news:create')    
+    # template_name = 'news/news_create.html'

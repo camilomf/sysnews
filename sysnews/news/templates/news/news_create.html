@@ -1,0 +1,152 @@
+{% extends 'core/base.html' %}
+
+{% block title %}
+{{ news.title }}
+{% endblock title %}
+
+{% block content %}
+  <h3 class="mt-2">
+    Agregar Noticia
+  </h3>
+
+  <form id="addNews" class="mt-2" method="post" action="{% url 'news:create' %}" enctype="multipart/form-data">{% csrf_token %}
+      <div class="form-group">
+        <label for="tags">Tags</label>
+          <div class="row">
+            <div class="col-11">
+              {{ form.tags }}
+
+            </div>
+            <div class="col-1">
+              <button type="button"  class="btn btn-outline-success" data-toggle="modal" data-target="#add_tags" data-dismiss="modal">
+                +
+              </button>
+            </div>
+          </div>
+      </div>
+      <div class="form-group">
+        <label for="fuente">Fuente</label>
+        <div class="row">
+          <div class="col-11">
+            {{ form.source }}
+          </div>
+          <div class="col-1">
+            <button type="button"  class="btn btn-outline-success" data-toggle="modal" data-target="#add_fuente" data-dismiss="modal">
+              +
+            </button>
+              <!-- <button type="button"  class="btn btn-outline-success" data-toggle="modal" data-target="#agregar">
+                Agregar Noticia
+              </button> -->
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="url">URL</label>
+        {{ form.url }}
+      </div>
+      <div class="form-group">
+        <label for="titulo">Título de la noticia</label>
+        {{ form.title }}
+      </div>
+      <div class="form-group">
+        <label for="imagen">Imagen</label>
+        {{ form.image }}
+      </div>
+      <div class="form-group">
+        <label for="encabezado">Encabezado de la noticia</label>
+      {{ form.headline }}
+      </div>
+      <div class="form-group">
+        <label for="cuerpo">Cuerpo de la noticia</label>
+        {{ form.explanation }}
+      </div>
+      <div class="form-group">
+        <label for="hash">HASH</label>
+        {{ form.hash_news }}
+      </div>
+      <div class="form-group">
+        <label for="publication_date">Fecha de publicación</label>
+        <input type="date" name="publication_date" id="publication_date" class="form-control">
+      </div>
+      <div class="form-group">
+        <label for="imagen">País</label>
+        {{ form.country }}
+      </div>
+      <button class="btn btn-primary form-control" type="submit">Guardar</button>
+  </form>
+  <hr>
+<!-- Crear Fuente -->
+<div id="add_fuente" class="modal fade" role="dialog">
+  <div class="modal-dialog modal-md" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h1 class="modal-title">Fuente (add)</h1>
+            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <form role="form" method="post" action="{% url 'news:add_source' %}" enctype="multipart/form-data">{% csrf_token %}
+          <div class="modal-body">
+            <div class="form-group">
+              <label for="name_source">Nombre</label>
+              {{ form_source.name }}
+            </div>
+            <div class="form-group">
+              <label for="description_source">Descripcion</label>
+              {{ form_source.description }}
+            </div>
+          
+          </div>
+          <div class="modal-footer">
+              <button type="submit" class="btn btn-success"><span class="fa fa-save"></span> Guardar</button>
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+          </div>
+          </form>
+        <!-- <form id="addNews" method="post" action="{% url 'news:create' %}" enctype="multipart/form-data">{% csrf_token %}
+          {{ form_source }}
+            <button class="btn btn-primary form-control" type="submit">SUBMIT</button>
+          </div>
+        </form> -->
+    </div>
+  </div>
+</div>
+
+<!-- Crear Tags -->
+<div id="add_tags" class="modal fade" role="dialog">
+  <div class="modal-dialog modal-md" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h1 class="modal-title">Tags (add)</h1>
+            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <form role="form" method="post" action="{% url 'news:add_tags' %}" enctype="multipart/form-data">{% csrf_token %}
+          <div class="modal-body">
+            <div class="form-group">
+              <label for="name_source">Nombre</label>
+              {{ form_tags.name }}
+            </div>
+            <div class="form-group">
+              <label for="description_source">Descripcion</label>
+              {{ form_tags.description }}
+            </div>
+          
+          </div>
+          <div class="modal-footer">
+              <button type="submit" class="btn btn-success"><span class="fa fa-save"></span> Guardar</button>
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+          </div>
+          </form>
+        <!-- <form id="addNews" method="post" action="{% url 'news:create' %}" enctype="multipart/form-data">{% csrf_token %}
+          {{ form_source }}
+            <button class="btn btn-primary form-control" type="submit">SUBMIT</button>
+          </div>
+        </form> -->
+    </div>
+  </div>
+</div>
+
+
+
+{% endblock content %}

@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User
-from .models import News
+from .models import News, Source, Tags
 
 class NewsForm(forms.ModelForm):
 
@@ -26,41 +26,41 @@ class NewsForm(forms.ModelForm):
             'explanation' : forms.Textarea(attrs={'class':'form-control','rows':20,'required':'required'}),
             'hash_news' : forms.TextInput(attrs={'class':'form-control'}),
             'publication_date' : forms.DateInput(format=('%d/%m/%Y'), attrs={'class':'form-control','type':'date','required':'required'}),
-            'tags' : forms.SelectMultiple(attrs={'class':'form-control','required':'required'}),
-            'image' : forms.ClearableFileInput(attrs={'class':'form-control-file mt-3','required':'required'}),
-            'source' : forms.Select(attrs={'class':'form-control','required':'required'}),
-            'country' : forms.Select(attrs={'class':'form-control','required':'required'}),
+            'tags' : forms.SelectMultiple(attrs={'class':'form-control chzn-select','required':'required'}),
+            'image' : forms.ClearableFileInput(attrs={'class':'form-control-file','required':'required'}),
+            'source' : forms.Select(attrs={'class':'form-control chzn-select','required':'required'}),
+            'country' : forms.Select(attrs={'class':'form-control chzn-select','required':'required'}),
         }
 
-# class TagsForm(forms.ModelForm):
+class TagsForm(forms.ModelForm):
 
-#     class Meta:
-#         model = Tags
-#         fields = ('nombre', 
-#                 'descripcion',
-#                 )
+    class Meta:
+        model = Tags
+        fields = ('name', 
+                'description',
+                )
         
-#         widgets = {
-#             'nombre' : forms.TextInput(attrs={'class':'form-control','required':'required'}),
-#             'descripcion' : forms.Textarea(attrs={'class':'form-control','rows':3}),
-#         }
+        widgets = {
+            'name' : forms.TextInput(attrs={'class':'form-control','required':'required'}),
+            'description' : forms.Textarea(attrs={'class':'form-control','rows':3}),
+        }
 
-#     def clean_nombre(self):
-#         nombre = self.cleaned_data.get("nombre")
-#         if Tags.objects.filter(nombre=nombre).exists():
-#             raise forms.ValidationError("El Tag ya se ha agregado")
-#         return nombre
+    # def clean_nombre(self):
+    #     nombre = self.cleaned_data.get("nombre")
+    #     if Tags.objects.filter(nombre=nombre).exists():
+    #         raise forms.ValidationError("El Tag ya se ha agregado")
+    #     return nombre
     
 
-# class FuenteForm(forms.ModelForm):
+class SourceForm(forms.ModelForm):
 
-#     class Meta:
-#         model = Fuente
-#         fields = ('nombre', 
-#                 'descripcion',
-#                 )
+    class Meta:
+        model = Source
+        fields = ('name', 
+                'description',
+                )
         
-#         widgets = {
-#             'nombre' : forms.TextInput(attrs={'class':'form-control','required':'required'}),
-#             'descripcion' : forms.Textarea(attrs={'class':'form-control','rows':3}),
-#         }
+        widgets = {
+            'name' : forms.TextInput(attrs={'class':'form-control','required':'required'}),
+            'description' : forms.Textarea(attrs={'class':'form-control','rows':3}),
+        }

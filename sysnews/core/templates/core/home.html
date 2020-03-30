@@ -16,7 +16,7 @@ Home
     </h1> -->
 
     <!-- Blog Post -->
-    {% for news in latest_news %}
+    {% for news in news_list %}
     <div class="card mb-4 mt-3">
       <img class="card-img-top" src="{{ news.image.url }}" alt="Card image cap">
       <div class="card-body">
@@ -63,7 +63,7 @@ Home
     {% endfor %}
 
     <!-- Pagination -->
-    <ul class="pagination justify-content-center mb-4">
+    <!-- <ul class="pagination justify-content-center mb-4">
       <li class="page-item">
         <a class="page-link" href="#">&larr; Older</a>
       </li>
@@ -71,11 +71,26 @@ Home
         <a class="page-link" href="#">Newer &rarr;</a>
       </li>
     </ul>
+-->
+    {% if is_paginated %}
+    <ul class="pagination">
+      {% if page_obj.has_previous %}
+      <li>
+          <span><a href="?page={{ page_obj.previous_page_number }}">&larr;</a></span>
+      </li>
+      {% endif %}
+      <li class="">
+          <span>Pág {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}.</span>
+      </li>
+      {% if page_obj.has_next %}
+      <li>
+          <span><a href="?page={{ page_obj.next_page_number }}">&rarr;</a></span>
+      </li>
+      {% endif %}
+    </ul>
+    {% endif %}
 
-  </div>
-
- 
-
+  </div> 
 
   <!-- Sidebar Widgets Column -->
   <div class="col-md-4">
