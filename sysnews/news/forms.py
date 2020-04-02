@@ -64,3 +64,10 @@ class SourceForm(forms.ModelForm):
             'name' : forms.TextInput(attrs={'class':'form-control','required':'required'}),
             'description' : forms.Textarea(attrs={'class':'form-control','rows':3}),
         }
+    
+    def clean_source(self):
+        name =self.cleaned_data.get('name')
+        if 'name' in self.changed_data:
+            if Source.objects.filter(name=name).exists():
+                raise forms.ValidationError("La fuente ya se ha agregado")
+        return name

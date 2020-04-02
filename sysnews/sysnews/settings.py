@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'core',
     'news.apps.NewsConfig',
+    'registration',
 ]
 
 MIDDLEWARE = [
@@ -145,3 +146,8 @@ ADMIN_MEDIA_PREFIX = '/static/admin/'
 # Media Files
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+#login
+
+LOGIN_REDIRECT_URL = 'home'
+LOGOUT_REDIRECT_URL = 'login'

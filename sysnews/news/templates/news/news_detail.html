@@ -1,5 +1,5 @@
 {% extends 'core/base.html' %}
-
+{% load user_tags %}
 {% block title %}
 {{ news.title }}
 {% endblock title %}
@@ -16,8 +16,8 @@
 
       <!-- Author -->
       <p class="lead">
-        por
-        <a href="#">{{ news.editor }}</a>
+        Publicado por
+        <a>{{ news.editor.first_name }}</a>
       </p>
 
       <hr>
@@ -47,10 +47,10 @@
       <p align="justify">{{ news.explanation|linebreaksbr }}</p>
 
       <hr>
-
+      
       <blockquote class="blockquote">
         <footer class="blockquote-footer">
-          <cite title="Source Title">{{ news.url }}</cite>
+          <cite title="Source Title"><a href="{{ news.url }}">{{ news.url }}</a></cite>
           <p class="lead">
             Fuente: 
           <label>{{ news.source.name }}</label>
@@ -58,9 +58,12 @@
         </footer>
     </blockquote>
 
+    {% if request.user|has_group:'Editor' or request.user|has_group:'Admin' %}
+    {% if request.user == news.editor %}
     <a href="{% url 'news:update' news.id %}"><button class="btn btn-warning">Editar</button></a>
     <hr>
-    </div>
+    {% endif %}  
+    {% endif %}  
 
     {% comment %}
     <!-- Sidebar Widgets Column -->
@@ -125,6 +128,6 @@
       </div>
     {% endcomment %}
 
-    
+  </div>
   </div>
 {% endblock content %}

@@ -15,7 +15,7 @@ from django.core.paginator import PageNotAnInteger
 class HomePageView(ListView):
     queryset = News.objects.all()
     template_name = "core/home.html"
-    paginate_by = 10
+    paginate_by = 4
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

@@ -1,5 +1,5 @@
 {% extends 'core/base.html' %}
-
+{% load user_tags %}
 {% block title %}
 Home
 {% endblock title %}
@@ -27,38 +27,43 @@ Home
       <div class="card-footer text-muted d-flex justify-content-between align-items-center">
         <div>
           Publicado el {{ news.publication_date }} por 
-          <a href="#">{{ news.editor }}</a> 
+          <a style="color: #009ee8;";>{{ news.editor.first_name }}</a> 
         </div>
         <div>
+          {% if request.user|has_group:'Editor' or request.user|has_group:'Admin' %}
+          {% if request.user == news.editor %}
           <a href="{% url 'news:update' news.id %}"><button class="btn btn-warning">Editar</button></a>
           <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#eliminar">Eliminar</button>
+          {% endif %}  
+          {% endif %}  
         </div>
       </div>
     </div>
 
-     <!-- Eliminar -->
-  <div id="eliminar" class="modal fade" role="dialog">
-    <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h4 class="modal-title">Noticia (delete)</h4>
-          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <form role="form" method="post" action="{% url 'news:delete' news.id %}">{% csrf_token %}
-          <div class="modal-body">
-            <p>¿Estás seguro de que quieres borrar noticia {{ news.title }}?</p>
+    <!-- Eliminar -->
+    {% if request.user|has_group:'Editor' or request.user|has_group:'Admin' %}
+    <div id="eliminar" class="modal fade" role="dialog">
+      <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Noticia (delete)</h4>
+            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
           </div>
-          <div class="modal-footer">
+          <form role="form" method="post" action="{% url 'news:delete' news.id %}">{% csrf_token %}
+            <div class="modal-body">
+              <p>¿Estás seguro de que quieres borrar noticia {{ news.title }}?</p>
+            </div>
+            <div class="modal-footer">
               <button type="submit" class="btn btn-danger"><span class="fa fa-save"></span> Sí</button>
               <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
-          </div>
-        </form>
-       
+            </div>
+          </form>
         </div>
       </div>
-    </div> 
+    </div>
+    {% endif %}
 
     {% endfor %}
 
@@ -76,15 +81,15 @@ Home
     <ul class="pagination">
       {% if page_obj.has_previous %}
       <li>
-          <span><a href="?page={{ page_obj.previous_page_number }}">&larr;</a></span>
+          <span><a href="?page={{ page_obj.previous_page_number }}">&larr; </a>&nbsp;</span>
       </li>
       {% endif %}
       <li class="">
-          <span>Pág {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}.</span>
+          <span> Pág {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}. </span>
       </li>
       {% if page_obj.has_next %}
       <li>
-          <span><a href="?page={{ page_obj.next_page_number }}">&rarr;</a></span>
+          <span>&nbsp; <a href="?page={{ page_obj.next_page_number }}">&rarr;</a></span>
       </li>
       {% endif %}
     </ul>
@@ -141,3 +146,30 @@ Home
 </div>
 <!-- /.row -->
 {% endblock content %}
+
+{% block script %}
+<script>
+  function setInputDate(_id){
+    var _dat = document.querySelector(_id);
+    var hoy = new Date(),
+        d = hoy.getDate(),
+        m = hoy.getMonth()+1, 
+        y = hoy.getFullYear(),
+        data;
+
+    if(d < 10){
+        d = "0"+d;
+    };
+    if(m < 10){
+        m = "0"+m;
+    };
+
+    data = y+"-"+m+"-"+d;
+    console.log(data);
+    _dat.value = data;
+  };
+  // setInputDate("#calendar");
+  setInputDate("#publication_date");
+  </script>
+
+{% endblock script %}

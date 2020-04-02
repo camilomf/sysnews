@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>Iniciar Sesión</title>
+  {% load static %}
+  <!-- Bootstrap core CSS -->
+  
+  <link href="{% static 'core/css/login.css' %}" rel="stylesheet">
+  <link href="{% static 'core/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+  <script src="{% static 'core/vendor/jquery/jquery.min.js' %}"></script>
+  <script src="{% static 'core/js/bootstrap.min.js' %}"></script>
+  
+  <style>
+
+    input[type=password] {
+    
+    background-color: #f6f6f6;
+    
+    border: none;
+    
+    color: #0d0d0d;
+    
+    padding: 15px 32px;
+    
+    text-align: center;
+    
+    text-decoration: none;
+    
+    display: inline-block;
+    
+    font-size: 16px;
+    
+    margin: 5px;
+    
+    width: 85%;
+    
+    border: 2px solid #f6f6f6;
+    
+    -webkit-transition: all 0.5s ease-in-out;
+    
+    -moz-transition: all 0.5s ease-in-out;
+    
+    -ms-transition: all 0.5s ease-in-out;
+    
+    -o-transition: all 0.5s ease-in-out;
+    
+    transition: all 0.5s ease-in-out;
+    
+    -webkit-border-radius: 5px 5px 5px 5px;
+    
+    border-radius: 5px 5px 5px 5px;
+    
+    }
+    
+    input[type=password]:focus {
+    
+    background-color: #fff;
+    
+    border-bottom: 2px solid #5fbae9;
+    
+    }
+    
+    input[type=password]:placeholder {
+    
+    color: #cccccc;
+    
+    }
+    
+    </style> 
+
+
+</head> 
+<body>
+  <div class="wrapper fadeInDown">
+    <div id="formContent">
+      <!-- Tabs Titles -->
+  
+      <!-- Icon -->
+      <div class="fadeIn first mt-3">
+        <img src="https://getbootstrap.com/docs/4.0/assets/brand/bootstrap-solid.svg" alt="" width="102" height="102">
+      </div>
+  
+      <!-- Login Form -->
+      <form class="mt-3" action="" method="post">{% csrf_token %}
+        <input type="text" class="fadeIn second" name="username" required id="id_username" placeholder="Username">
+        <input type="password" class="fadeIn third" name="password" required id="id_password" placeholder="Password">
+        <input type="submit" class="fadeIn fourth" value="Log In">
+      </form>
+    </div>
+  </div>
+</body>
+
+</html>
