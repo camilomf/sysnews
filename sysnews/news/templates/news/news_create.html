@@ -28,6 +28,30 @@
         <label for="fuente">Fuente</label>
         <div class="row">
           <div class="col-11">
+            <select name="source" class="form-control chzn-select" required=required id="id_source" >
+              <option value="" selected>---------</option>
+              {% for source in sources %}
+                <option value="{{ source.id }}">{{ source.name }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="col-1">
+            <button type="button"  class="btn btn-outline-success" data-toggle="modal" data-target="#add_fuente" data-dismiss="modal">
+              +
+            </button>
+              <!-- <button type="button"  class="btn btn-outline-success" data-toggle="modal" data-target="#agregar">
+                Agregar Noticia
+              </button> -->
+          </div>
+        </div>
+      </div>
+      
+      
+      {% comment %}
+      <div class="form-group">
+        <label for="fuente">Fuente</label>
+        <div class="row">
+          <div class="col-11">
             {{ form.source }}
           </div>
           <div class="col-1">
@@ -40,6 +64,8 @@
           </div>
         </div>
       </div>
+      {% endcomment %}
+  
       <div class="form-group">
         <label for="url">URL</label>
         {{ form.url }}
@@ -85,7 +111,8 @@
                 <span aria-hidden="true">&times;</span>
             </button>
         </div>
-        <form role="form" method="post" action="{% url 'news:add_source' %}" enctype="multipart/form-data">{% csrf_token %}
+        <form id="addSource" role="form" method="post" action="">
+          {% csrf_token %}
           <div class="modal-body">
             <div class="form-group">
               <label for="name_source">Nombre</label>
@@ -102,11 +129,6 @@
               <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
           </div>
           </form>
-        <!-- <form id="addNews" method="post" action="{% url 'news:create' %}" enctype="multipart/form-data">{% csrf_token %}
-          {{ form_source }}
-            <button class="btn btn-primary form-control" type="submit">SUBMIT</button>
-          </div>
-        </form> -->
     </div>
   </div>
 </div>
@@ -171,6 +193,40 @@
   </script>
 <script>
   $('.chzn-select').chosen();
+</script>
+<script>
+// Create Django Ajax Call
+$("form#addSource").submit(function() {
+    var nameInput = $('input[name="name"]').val().trim();
+    // var descriptionInput = $('input[name="description"]').val().trim();
+    
+    if (nameInput) {
+        // Create Ajax Call
+        $.ajax({
+            url: '{% url "news:crud_ajax_create" %}',
+            data: {
+                'name': nameInput,
+                // 'address': descriptionInput
+            },
+            dataType: 'json',
+            success: function (data) {
+                if (data.source) {
+                  appendToUsrTable();
+                  alert("success");
+                }
+            }
+        });
+      } else {
+        alert("All fields must have a valid value.");
+    }
+    $('form#addSource').trigger("reset");
+    return false;
+});
+function appendToUsrTable() {
+  alert('append');
+  $("select").append("<option value=''>nuevo1</option>");
+  // $("p").append(" <b>Appended text</b>.");
+}
 </script>
 {% endblock script %}
   

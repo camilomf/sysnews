@@ -9,6 +9,6 @@ news_patterns = ([
      path('update/<int:pk>', login_required(NewsUpdate.as_view()), name='update'),
      path('delete/<int:pk>', login_required(DeleteNews.as_view()), name='delete'),
      path('create/',  login_required(CreateNews.as_view()), name='create'),
-     path('source/add/',  login_required(SourceCreate.as_view()), name='add_source'),
+     path('ajax/crud/create/',  login_required(SourceCreate.as_view()), name='crud_ajax_create'),
      path('tags/add/',  login_required(TagsCreate.as_view()), name='add_tags'),
 ], 'news')

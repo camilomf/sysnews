@@ -7,7 +7,7 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic.list import ListView
 from django.views.generic import View
 from django.http import JsonResponse
-from .models import News
+from .models import News, Source, Tags
 from .forms import NewsForm, SourceForm, TagsForm
 from django.utils.text import slugify
 from django.contrib.auth.decorators import login_required, permission_required
@@ -43,6 +43,7 @@ class CreateNews(CreateView):
         context = super().get_context_data(**kwargs)
         context['form_source'] = SourceForm
         context['form_tags'] = TagsForm
+        context['sources'] = Source.objects.all()
         return context
 
 @method_decorator(allowed_users(allowed_roles=['Editor','Admin']),name="dispatch")
@@ -77,9 +78,25 @@ class DeleteNews(DeleteView):
 ### Source
 @method_decorator(allowed_users(allowed_roles=['Editor','Admin']),name="dispatch")
 class SourceCreate (CreateView):
-    form_class = SourceForm
-    success_url = reverse_lazy('news:create')    
-    template_name = 'news/source_create.html'
+    # form_class = SourceForm
+    # success_url = reverse_lazy('news:create')    
+    # template_name = 'news/source_create.html'
+
+    def  get(self, request):
+        name1 = request.GET.get('name', None)
+        # description1 = request.GET.get('description', None)
+
+        obj = Source.objects.create(
+            name = name1,
+            # description = description1,
+        )
+
+        source = {'id':obj.id,'name':obj.name}
+
+        data = {
+            'source': source
+        }
+        return JsonResponse(data)
  
 ### Tags
 @method_decorator(allowed_users(allowed_roles=['Editor','Admin']),name="dispatch")
