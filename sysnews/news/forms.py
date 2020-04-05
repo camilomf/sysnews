@@ -29,7 +29,7 @@ class NewsForm(forms.ModelForm):
             'tags' : forms.SelectMultiple(attrs={'class':'form-control chzn-select','required':'required'}),
             'image' : forms.ClearableFileInput(attrs={'class':'form-control-file','required':'required'}),
             'source' : forms.Select(attrs={'class':'form-control chzn-select','required':'required'}),
-            'country' : forms.Select(attrs={'class':'form-control chzn-select','required':'required'}),
+            'country' : forms.Select(attrs={'class':'form-control','required':'required'}),
         }
 
 class TagsForm(forms.ModelForm):
