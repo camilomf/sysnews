@@ -78,29 +78,14 @@ class DeleteNews(DeleteView):
 ### Source
 @method_decorator(allowed_users(allowed_roles=['Editor','Admin']),name="dispatch")
 class SourceCreate (CreateView):
-    # form_class = SourceForm
-    # success_url = reverse_lazy('news:create')    
-    # template_name = 'news/source_create.html'
+    form_class = SourceForm
+    success_url = reverse_lazy('news:create')    
+    template_name = 'news/source_create.html'
 
-    def  get(self, request):
-        name1 = request.GET.get('name', None)
-        # description1 = request.GET.get('description', None)
-
-        obj = Source.objects.create(
-            name = name1,
-            # description = description1,
-        )
-
-        source = {'id':obj.id,'name':obj.name}
-
-        data = {
-            'source': source
-        }
-        return JsonResponse(data)
  
 ### Tags
 @method_decorator(allowed_users(allowed_roles=['Editor','Admin']),name="dispatch")
 class TagsCreate (CreateView):
     form_class = TagsForm
     success_url = reverse_lazy('news:create')    
-    # template_name = 'news/news_create.html'
+    template_name = 'news/tags_create.html'

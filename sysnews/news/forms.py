@@ -45,11 +45,12 @@ class TagsForm(forms.ModelForm):
             'description' : forms.Textarea(attrs={'class':'form-control','rows':3}),
         }
 
-    # def clean_nombre(self):
-    #     nombre = self.cleaned_data.get("nombre")
-    #     if Tags.objects.filter(nombre=nombre).exists():
-    #         raise forms.ValidationError("El Tag ya se ha agregado")
-    #     return nombre
+    # def clean_name(self):
+    #     name =self.cleaned_data.get('name')
+    #     if 'name' in self.changed_data:
+    #         print ("hola")
+    #         raise forms.ValidationError("el tag ya se ha agregado")
+    #     return name
     
 
 class SourceForm(forms.ModelForm):
@@ -65,9 +66,8 @@ class SourceForm(forms.ModelForm):
             'description' : forms.Textarea(attrs={'class':'form-control','rows':3}),
         }
     
-    def clean_source(self):
-        name =self.cleaned_data.get('name')
-        if 'name' in self.changed_data:
-            if Source.objects.filter(name=name).exists():
-                raise forms.ValidationError("La fuente ya se ha agregado")
-        return name
+    # def clean_name(self):
+    #     name =self.cleaned_data.get('name')
+    #     if name in self.changed_data:
+    #         raise forms.ValidationError("La fuente ya se ha agregado")
+    #     return name

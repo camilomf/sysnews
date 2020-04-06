@@ -8,44 +8,23 @@
   <h3 class="mt-2">
     Agregar Noticia
   </h3>
-  <p>hola </p>
-  <p id="p1">hola 2</p>
   <form id="addNews" class="mt-2" method="post" action="{% url 'news:create' %}" enctype="multipart/form-data">{% csrf_token %}
       <div class="form-group">
         <label for="tags">Tags</label>
           <div class="row">
             <div class="col-11">
               {{ form.tags }}
-
             </div>
             <div class="col-1">
-              <button type="button"  class="btn btn-outline-success" data-toggle="modal" data-target="#add_tags" data-dismiss="modal">
-                +
-              </button>
+              <a href="{% url 'news:add_tags' %}">
+                <button type="button"  class="btn btn-outline-success">
+                  +
+                </button>
+              </a>
             </div>
           </div>
       </div>
-      
-      <div class="form-group">
-        <label for="fuente">Fuente</label>
-        <div class="row">
-          <div class="col-11">
-            <select name="source" class="form-control" required=required id="id_source" >
-              <option value="" selected>---------</option>
-              {% for source in sources %}
-                <option value="{{ source.id }}">{{ source.name }}</option>
-              {% endfor %}
-            </select>
-          </div>
-          <div class="col-1">
-            <button type="button"  class="btn btn-outline-success" data-toggle="modal" data-target="#add_fuente" data-dismiss="modal">
-              +
-            </button>
-          </div>
-        </div>
-      </div>
-      
-      {% comment %}
+     
       <div class="form-group">
         <label for="fuente">Fuente</label>
         <div class="row">
@@ -53,16 +32,15 @@
             {{ form.source }}
           </div>
           <div class="col-1">
-            <button type="button"  class="btn btn-outline-success" data-toggle="modal" data-target="#add_fuente" data-dismiss="modal">
-              +
-            </button>
-              <!-- <button type="button"  class="btn btn-outline-success" data-toggle="modal" data-target="#agregar">
-                Agregar Noticia
-              </button> -->
+            <a href="{% url 'news:add_source' %}">
+              <button type="button"  class="btn btn-outline-success">
+                +
+              </button>
+            </a>
           </div>
         </div>
       </div>
-      {% endcomment %}
+      
   
       <div class="form-group">
         <label for="url">URL</label>
@@ -99,71 +77,6 @@
       <button class="btn btn-primary form-control" type="submit">Guardar</button>
   </form>
   <hr>
-<!-- Crear Fuente -->
-<div id="add_fuente" class="modal fade" role="dialog">
-  <div class="modal-dialog modal-md" role="document">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h1 class="modal-title">Fuente (add)</h1>
-            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-        <form id="addSource" role="form" method="post" action="">
-          {% csrf_token %}
-          <div class="modal-body">
-            <div class="form-group">
-              <label for="name_source">Nombre</label>
-              {{ form_source.name }}
-            </div>
-            
-            {% comment %}
-            <div class="form-group">
-              <label for="description_source">Descripcion</label>
-              {{ form_source.description }}
-            </div>
-            {% endcomment %}      
-    
-          </div>
-          <div class="modal-footer">
-              <button type="submit" class="btn btn-primary" >Save changes</button>
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-          </div>
-          </form>
-    </div>
-  </div>
-</div>
-
-<!-- Crear Tags -->
-<div id="add_tags" class="modal fade" role="dialog">
-  <div class="modal-dialog modal-md" role="document">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h1 class="modal-title">Tags (add)</h1>
-            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-        <form role="form" method="post" action="{% url 'news:add_tags' %}" enctype="multipart/form-data">{% csrf_token %}
-          <div class="modal-body">
-            <div class="form-group">
-              <label for="name_source">Nombre</label>
-              {{ form_tags.name }}
-            </div>
-            <div class="form-group">
-              <label for="description_source">Descripcion</label>
-              {{ form_tags.description }}
-            </div>
-          
-          </div>
-          <div class="modal-footer">
-              <button type="submit" class="btn btn-success"><span class="fa fa-save"></span> Guardar</button>
-              <!-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button> -->
-          </div>
-          </form>
-    </div>
-  </div>
-</div>
 
 {% endblock content %}
 
@@ -194,42 +107,6 @@
   </script>
 <script>
   $('.chzn-select').chosen();
-</script>
-<script>
-// Create Django Ajax Call
-$("form#addSource").submit(function() {
-    var nameInput = $('input[name="name"]').val().trim();
-    // var descriptionInput = $('input[name="description"]').val().trim();
-    
-    if (nameInput) {
-        // Create Ajax Call
-        $.ajax({
-            url: '{% url "news:crud_ajax_create" %}',
-            data: {
-                'name': nameInput,
-                // 'address': descriptionInput
-            },
-            dataType: 'json',
-            success: function (data) {
-                if (data.source) {
-                  appendToUsrTable(data);
-                  alert("success");
-                }
-            }
-        });
-      } else {
-        alert("All fields must have a valid value.");
-    }
-    $('form#addSource').trigger("reset");
-    return false;
-});
-
-function appendToUsrTable(data) {   
-            $('#id_source').append(`
-              <option value="${data.source.id}" selected> 
-                ${data.source.name} 
-              </option>`)
-;}
 </script>
 {% endblock script %}
   

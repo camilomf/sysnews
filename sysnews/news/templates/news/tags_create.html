@@ -7,9 +7,9 @@
 {% block content %}
 
   <h3 class="mt-2">
-    Agregar Fuente
+    Agregar Tag
   </h3>
-  <form class="mt-2" method="post" action="{% url 'news:add_source' %}">{% csrf_token %}
+  <form class="mt-2" method="post" action="{% url 'news:add_tags' %}">{% csrf_token %}
     <div class="form-group">
         <label for="name_source">Nombre</label>
         {{ form.name }}
