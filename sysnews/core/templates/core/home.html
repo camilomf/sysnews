@@ -16,6 +16,11 @@ Home
     </h1> -->
 
     <!-- Blog Post -->
+    
+    {% if not news_list %}
+    <br>
+      <h3>No hay Resultados :(</h3>
+    {% else %}
     {% for news in news_list %}
     <div class="card mb-4 mt-3">
       <img class="card-img-top" src="{{ news.image.url }}" alt="Card image cap">
@@ -40,9 +45,9 @@ Home
       </div>
     </div>
 
-    <!-- Eliminar -->
-    {% if request.user|has_group:'Editor' or request.user|has_group:'Admin' %}
-    <div id="eliminar" class="modal fade" role="dialog">
+      <!-- Eliminar -->
+      {% if request.user|has_group:'Editor' or request.user|has_group:'Admin' %}
+      <div id="eliminar" class="modal fade" role="dialog">
       <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
         <div class="modal-content">
           <div class="modal-header">
@@ -62,10 +67,13 @@ Home
           </form>
         </div>
       </div>
-    </div>
-    {% endif %}
+      </div>
+      {% endif %}
 
     {% endfor %}
+    {% endif %}
+      
+
 
     <!-- Pagination -->
     <!-- <ul class="pagination justify-content-center mb-4">
@@ -102,14 +110,30 @@ Home
 
     <!-- Search Widget -->
     <div class="card my-4">
-      <h5 class="card-header">Search</h5>
+      <h5 class="card-header">Busqueda por título</h5>
       <div class="card-body">
-        <div class="input-group">
-          <input type="text" class="form-control" placeholder="Search for...">
-          <span class="input-group-btn">
-            <button class="btn btn-secondary" type="button">Go!</button>
-          </span>
-        </div>
+        <form method="POST" action="{% url 'search_by_title' %}">{% csrf_token %}         
+          <div class="input-group">
+            <input type="text" required name="search_by_title" id="buscador" class="form-control" placeholder="Buscar ..." value="{{ request.GET.search_by_title }}">
+            <button type="submit" class="btn btn-info">
+              <span class="glyphicon glyphicon-search"></span> Buscar
+            </button>
+          </div>
+          </form>
+      </div>
+    </div>
+
+    <div class="card my-4">
+      <h5 class="card-header">Búsqueda por fecha</h5>
+      <div class="card-body">
+        <form method="POST" action="{% url 'search_by_date' %}">{% csrf_token %}         
+          <div class="input-group">
+            <input type="date" required name="search_by_date" id="buscador" class="form-control" placeholder="" value="{{ request.GET.search_by_date }}">
+            <button type="submit" class="btn btn-info">
+              <span class="glyphicon glyphicon-search"></span> Buscar
+            </button>
+          </div>
+          </form>
       </div>
     </div>
 
@@ -122,7 +146,7 @@ Home
             <ul class="list-unstyled mb-0">
               {% for country in countries %}
               <li>
-                <a href="#">{{ country.name }}</a>
+                <a href="{% url 'search_by_country' id=country.id %}">{{ country.name }}</a>
               </li>  
               {% endfor %}
             </ul>

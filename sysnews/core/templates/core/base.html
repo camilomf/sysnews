@@ -13,6 +13,7 @@
 
 
   <!-- Bootstrap core CSS -->
+  
   <link href="{% static 'core/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
   <link href="{% static 'core/css/chosen.css' %}" rel="stylesheet">
   
@@ -44,7 +45,7 @@
             <a class="nav-link" href="#">About</a>
           </li> -->
           <li class="nav-item">
-            <a class="nav-link" href="#">{{ request.user.first_name }}</a>
+            <a class="nav-link">{{ request.user.first_name }}</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="{% url 'logout' %}">Logout</a>
