@@ -5,7 +5,9 @@ from . import views
 
 urlpatterns = [
     path('', login_required(HomePageView.as_view()), name="home"),
+    path('search_by_user/',views.searchByUser, name="search_by_user"),
     path('search_by_title/',views.searchByTitle, name="search_by_title"),
+    path('search_by_tags/',views.searchByTags, name="search_by_tags"),
     path('search_by_date/',views.searchByDate, name="search_by_date"),
     path('<id>/',views.searchByCountry, name="search_by_country"),
 ]
