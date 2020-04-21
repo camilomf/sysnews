@@ -76,19 +76,25 @@ def searchByDate(request, **kwargs):
 @login_required
 def searchByTags(request, **kwargs):
     tags = request.POST.getlist('search_by_tags')
+    print (tags)
     # context = {}
     # context['countries'] = Country.objects.all()
     # context['tags'] = Tags.objects.all()
     if len(tags) == 1:
-        news = News.objects.filter(tags=tags[0])
+        print ("1")
+        news = News.objects.filter(tags=tags[0])    
         context = context_permanent(news)
         return render(request, 'core/home.html', context)
     if len(tags) == 2:
-        news = News.objects.filter(Q(tags__id__icontains=tags[0]) & Q(tags__id__icontains=tags[1]))
+        print ("2")
+        news = News.objects.filter(Q(tags__id__icontains=tags[0]) and Q(tags__id__icontains=tags[1]))
+        print (news)
         context = context_permanent(news)
         return render(request, 'core/home.html', context)
     if len(tags) == 3:
-        news = News.objects.filter(Q(tags__id__icontains=tags[0]) & Q(tags__id__icontains=tags[1]) & Q(tags__id__contains=tags[2]))
+        print ("3")
+        news = News.objects.filter(Q(tags__id__icontains=tags[0]) and Q(tags__id__icontains=tags[1]) and Q(tags__id__contains=tags[2]))
+        print (news)
         context = context_permanent(news)
         return render(request, 'core/home.html', context)
     

@@ -46,7 +46,7 @@
             <a class="nav-link" href="#">About</a>
           </li> -->
           <li class="nav-item">
-            <a class="nav-link">{{ request.user.first_name }}</a>
+            <a class="nav-link">{{ request.user.username }}</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="{% url 'logout' %}">Logout</a>
@@ -205,19 +205,19 @@
   <footer class="py-5 bg-dark">
     <div class="container">
       <div class="row">
-        <div class="col-10">
+        <div class="col-8">
           <p class="m-0 text-center text-white mt-4">Copyright &copy; Almanaque 2020 </p>
         </div>
-        <div class="col-2">
+        <div class="col-4">
           <h5 class="text-white"><b>Contacto</b></h5>
           <table class="text-white">
             <tr>
-              <td>Opus</td>
-              <td>82614</td>
-            </tr>
-            <tr>
               <td>Correo</td>
               <td>V3078</td>
+            </tr>
+            <tr>
+              <td>Opus</td>
+              <td>82614 - 82584</td>
             </tr>
           </table>
         </div>
