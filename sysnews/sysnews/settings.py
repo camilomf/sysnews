@@ -90,8 +90,8 @@ DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.mysql',
 #         'NAME': 'news',
-#         'USER': 'usuario',
-#         'PASSWORD': 'password',
+#         'USER': 'admin',
+#         'PASSWORD': '2020,,almanaque',
 #         'HOST': 'localhost',
 #         'PORT': '',
 #     }
@@ -138,7 +138,7 @@ STATIC_URL = '/static/'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-STATIC_ROOT = 'static'
+STATIC_ROOT = '/home/usuario/sysnews/core/static'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR,'media')
 ADMIN_MEDIA_PREFIX = '/static/admin/'
