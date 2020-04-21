@@ -79,11 +79,11 @@ class Source(models.Model):
 
 class News(models.Model):
     url = models.CharField(max_length=400, verbose_name="URL Principal")
-    title = models.CharField(max_length=400, verbose_name="Titulo", null=True, blank=True)
+    title = models.CharField(max_length=400, verbose_name="Titulo")
     headline = models.TextField(verbose_name="Encabezado", null=True, blank=True)
     # cuerpo = RichTextField(verbose_name="Cuerpo", null=True, blank=True)
-    explanation = models.TextField(verbose_name="Cuerpo", null=True, blank=True)
-    hash_news = models.CharField(max_length=400, verbose_name="Hash noticia", null=True, blank=True)
+    explanation = models.TextField(verbose_name="Cuerpo")
+    #hash_news = models.CharField(max_length=400, verbose_name="Hash noticia", null=True, blank=True)
     publication_date = models.DateField(verbose_name="Fecha de publicación", null=True, blank=True)
     tags = models.ManyToManyField(Tags, verbose_name="Tags")
     image = models.ImageField(upload_to='imagenes/')

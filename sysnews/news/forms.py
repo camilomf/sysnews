@@ -6,11 +6,11 @@ class NewsForm(forms.ModelForm):
 
     class Meta:
         model = News
-        fields = ('url', 
+        fields = (
+                'url', 
                 'title',
                 'headline',
                 'explanation',
-                'hash_news',
                 'publication_date',
                 'tags',
                 'image',
@@ -24,7 +24,6 @@ class NewsForm(forms.ModelForm):
             'title' : forms.TextInput(attrs={'class':'form-control','required':'required'}),
             'headline' : forms.Textarea(attrs={'class':'form-control','rows':3,'required':'required'}),
             'explanation' : forms.Textarea(attrs={'class':'form-control','rows':20,'required':'required'}),
-            'hash_news' : forms.TextInput(attrs={'class':'form-control'}),
             'publication_date' : forms.DateInput(format=('%d/%m/%Y'), attrs={'class':'form-control','type':'date','required':'required'}),
             'tags' : forms.SelectMultiple(attrs={'class':'form-control chzn-select','required':'required'}),
             'image' : forms.ClearableFileInput(attrs={'class':'form-control-file','required':'required'}),
