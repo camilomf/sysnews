@@ -15,10 +15,6 @@
         {{ form.name }}
         {{ form.name.errors }}
     </div>
-    <div class="form-group">
-      <label for="description_source">Descripcion</label>
-      {{ form.description }}
-    </div>
     <div style="margin-bottom: 42%;">
         <button class="btn btn-primary form-control" type="submit" style="margin-bottom: 1%;">Guardar</button>
         <a href="{% url 'news:create' %}" class="btn btn-success form-control">

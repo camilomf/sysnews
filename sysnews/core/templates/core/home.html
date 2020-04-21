@@ -27,7 +27,7 @@ Home
       <div class="card-body">
         <h2 class="card-title">{{ news.title }}</h2>
         <p class="card-text">{{ news.headline }}</p>
-        <a href="{% url 'news:detail' news.id news.title|slugify %}" class="btn btn-primary">Read More &rarr;</a>
+        <a href="{% url 'news:detail' news.id news.title|slugify %}" class="btn btn-primary">Leer más &rarr;</a>
       </div>
       <div class="card-footer text-muted d-flex justify-content-between align-items-center">
         <div>
@@ -58,7 +58,7 @@ Home
           </div>
           <form role="form" method="post" action="{% url 'news:delete' news.id %}">{% csrf_token %}
             <div class="modal-body">
-              <p>¿Estás seguro de que quieres borrar noticia {{ news.title }}?</p>
+              <p>¿Estás seguro de que quieres borrar la noticia {{ news.title }}?</p>
             </div>
             <div class="modal-footer">
               <button type="submit" class="btn btn-danger"><span class="fa fa-save"></span> Sí</button>
@@ -128,7 +128,7 @@ Home
 
     <!-- Search Widget -->
     <div class="card my-4">
-      <h5 class="card-header">Busqueda por título</h5>
+      <h5 class="card-header">Búsqueda por título</h5>
       <div class="card-body">
         <form method="POST" action="{% url 'search_by_title' %}">{% csrf_token %}         
           <div class="input-group">
