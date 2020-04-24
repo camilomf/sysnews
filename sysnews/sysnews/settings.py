@@ -136,18 +136,15 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+#css admindjango
 STATIC_ROOT = '/home/usuario/sysnews/core/static'
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR,'media')
-ADMIN_MEDIA_PREFIX = '/static/admin/'
 
 # Media Files
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+ADMIN_MEDIA_PREFIX = '/static/admin/'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 #login
-
 LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = 'login'
