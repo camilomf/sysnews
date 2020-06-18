@@ -1,6 +1,6 @@
 from django.urls import path
 from django.contrib.auth.decorators import login_required
-from .views import NewsDetailView,NewsListView, CreateNews, DeleteNews, NewsUpdate, SourceCreate, TagsCreate
+from .views import NewsDetailView,NewsListView, CreateNews, DeleteNews, NewsUpdate, SourceCreate, TagsCreate, sourceList, sourceAdd
 # from .views import HomePageView
 
 news_patterns = ([
@@ -11,4 +11,6 @@ news_patterns = ([
      path('create/',  login_required(CreateNews.as_view()), name='create'),
      path('add_source',  login_required(SourceCreate.as_view()), name='add_source'),
      path('add_tags',  login_required(TagsCreate.as_view()), name='add_tags'),
+     path('source_list', sourceList ),
+     path('source_add', sourceAdd, name='source_add' ),
 ], 'news')

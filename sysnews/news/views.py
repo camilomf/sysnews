@@ -14,6 +14,7 @@ from django.contrib.auth.decorators import login_required, permission_required
 from core.decorators import allowed_users
 from django.utils.decorators import method_decorator
 from django.http import HttpResponse
+import json
 
 
 # Create your views here.
@@ -89,3 +90,22 @@ class TagsCreate (CreateView):
     form_class = TagsForm
     success_url = reverse_lazy('news:create')    
     template_name = 'news/tags_create.html'
+
+@login_required
+def sourceList(request):
+    sources = Source.objects.all()
+    sources = [ sourceSerializer(source) for source in sources ]
+    return HttpResponse(json.dumps(sources),content_type='application/json')
+
+def sourceSerializer(source):
+    return {'id':source.id,'name':source.name}
+
+def sourceAdd(request):
+    if request.method == 'POST':
+        name = request.POST['name']
+
+        Source.objects.create(name=name)
+
+        return HttpResponse('')
+
+        
