@@ -76,20 +76,13 @@ class DeleteNews(DeleteView):
             return HttpResponse('You are not authorized')
         return response
 
-### Source
-@method_decorator(allowed_users(allowed_roles=['Editor','Admin']),name="dispatch")
-class SourceCreate (CreateView):
-    form_class = SourceForm
-    success_url = reverse_lazy('news:create')    
-    template_name = 'news/source_create.html'
-
  
-### Tags
-@method_decorator(allowed_users(allowed_roles=['Editor','Admin']),name="dispatch")
-class TagsCreate (CreateView):
-    form_class = TagsForm
-    success_url = reverse_lazy('news:create')    
-    template_name = 'news/tags_create.html'
+# ### Tags
+# @method_decorator(allowed_users(allowed_roles=['Editor','Admin']),name="dispatch")
+# class TagsCreate (CreateView):
+#     form_class = TagsForm
+#     success_url = reverse_lazy('news:create')    
+#     template_name = 'news/tags_create.html'
 
 @login_required
 def sourceList(request):
@@ -100,12 +93,36 @@ def sourceList(request):
 def sourceSerializer(source):
     return {'id':source.id,'name':source.name}
 
+@login_required
+@allowed_users(allowed_roles=['Editor','Admin'])
 def sourceAdd(request):
+    form = SourceForm(request.POST)
     if request.method == 'POST':
-        name = request.POST['name']
-
-        Source.objects.create(name=name)
-
-        return HttpResponse('')
-
+        if form.is_valid():
+            source = Source(name=request.POST['name'])
+            source.save()
+            return JsonResponse({"message":"Successfully"})
+        else:
+            return HttpResponse(form.errors.as_json(), status = 400, content_type='application/json')
         
+#tags
+@login_required()
+def tagList(request):
+    tags = Tags.objects.all()
+    tags = [ tagsSerializer(tag) for tag in tags ]
+    return HttpResponse(json.dumps(tags),content_type='application/json')
+
+def tagsSerializer(tag):
+    return {'id':tag.id,'name':tag.name}
+
+@login_required
+@allowed_users(allowed_roles=['Editor','Admin'])
+def tagsAdd(request):
+    form = TagsForm(request.POST)
+    if request.method == 'POST':
+        if form.is_valid():
+            tags = Tags(name=request.POST['name'])
+            tags.save()
+            return JsonResponse({"message":"Successfully"})
+        else:
+            return HttpResponse(form.errors.as_json(), status = 400, content_type='application/json')

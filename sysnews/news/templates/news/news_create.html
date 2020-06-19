@@ -1,7 +1,7 @@
 {% extends 'core/base.html' %}
 
 {% block title %}
-{{ news.title }}
+Agregar Noticia
 {% endblock title %}
 
 {% block content %}
@@ -9,77 +9,56 @@
     Agregar Noticia
   </h3>
   <form id="addNews" class="mt-2" method="post" action="{% url 'news:create' %}" enctype="multipart/form-data">{% csrf_token %}
-      <div class="form-group">
-        <label for="tags">Tags</label>
-          <div class="row">
-            <div class="col-11">
-              {{ form.tags }}
-            </div>
-            <div class="col-1">
-              {% comment %}
-              <a href="{% url 'news:add_tags' %}"></a>  
-              {% endcomment %}
-              <a href="#"></a>  
-                <button type="button"  class="btn btn-outline-success">
-                  +
-                </button>
-              </a>
-            </div>
-          </div>
-      </div>
-     
-      <div class="form-group">
-        <label for="fuente">Fuente</label>
+          
+    {% comment %}
+    <div class="form-group">
+      <label for="tags">Tags</label>
         <div class="row">
           <div class="col-11">
-            <select name="source-source" id="id_source">
-              <option value="1">1</option>
-              <option value="2">2</option>
+            {{ form.tags }}
+          </div>
+          <div class="col-1">
+            <a href="{% url 'news:add_tags' %}"></a>
+            <button type="button"  class="btn btn-outline-success">
+              +
+            </button>
+          </div>
+        </div>
+    </div>
+    {% endcomment %} 
+
+    <div class="form-group">
+      <label for="tags">Tags</label>
+      <div class="row">
+        <div class="col-11">
+          <select name="tags" id="id_tags" multiple="" class="form-control">
+          </select>
+        </div>
+        <div class="col-1">
+          <button type="button" id="btnTags" class="btn btn-outline-success" data-toggle="modal" data-target="#tagsModal">
+            +
+          </button>
+        </div>
+      </div>
+    </div>
+      
+    
+      <div class="form-group">
+        <label for="fuente">Fuente</label>
+        <div class="row" id="source-div">
+          <div class="col-11">
+            <select name="source" id="id_source" class="form-control" required="required">
+              <option value="" id="loading">---------</option>
             </select>
           </div>
           <div class="col-1">
-              {% comment %}
-              <a href="{% url 'news:add_source' %}">    
-              {% endcomment %}
-            <a href="#"></a>
-              <!-- <button type="button"  id="btnsource" class="btn btn-outline-success">
-                +
-              </button> -->
-              <button id="example" type="button">
-                example
-              </button>
-              <button type="button" class="btn btn-outline-success" data-toggle="modal" data-target="#exampleModal">
+              <button type="button"  class="btn btn-outline-success" data-toggle="modal" data-target="#sourceModal">
                 +
               </button>
-            </a>
           </div>
         </div>
       </div>
 
-      {% comment %}
-      <div class="form-group">
-        <label for="fuente">Fuente</label>
-        <div class="row">
-          <div class="col-11">
-            {{ form.source }}
-          </div>
-          <div class="col-1">
-              
-              <a href="{% url 'news:add_source' %}">    
-             
-            <a href="#"></a>
-              <!-- <button type="button"  id="btnsource" class="btn btn-outline-success">
-                +
-              </button> -->
-              <button type="button" class="btn btn-outline-success" data-toggle="modal" data-target="#exampleModal">
-                +
-              </button>
-            </a>
-          </div>
-        </div>
-      </div>
-      {% endcomment %}
-      
       <div class="form-group">
         <label for="url">URL</label>
         {{ form.url }}
@@ -112,7 +91,9 @@
   </form>
   <hr>
 
-  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+
+  <!-- modal source -->
+  <div class="modal fade" id="sourceModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
@@ -125,8 +106,7 @@
           <form id="source-form" class="mt-2" method="post">{% csrf_token %}
             <div class="form-group">
               <label for="nombre">Nombre:</label>
-                {{ form_source.name }}
-                {{ form_source.name.errors }}
+              <input type="text" id="name_source" class="form-control">
             </div>
             <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -138,64 +118,213 @@
     </div>
   </div>
 
+  <!-- modal tags -->
+  <div class="modal fade" id="tagsModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Agregar Tags</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form id="tags-form" class="mt-2" method="post">{% csrf_token %}
+            <div class="form-group">
+              <label for="nombre">Nombre:</label>
+              <input type="text" id="name_tag" class="form-control">
+                <!-- {{ form_source.name }} -->
+            </div>
+            <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary">Save changes</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
 {% endblock content %}
 
 
 {% block script %}
 <script>
+  //load page
+  $(document).ready(function(){
+    var bac = $("#id_tags").val();
+    tagslist(bac);
+    mostrar();
+    $('#id_source').select2();
+    $('#id_tags').select2();
+  });
 
+  //focus textbox modal
+  $('#sourceModal').on('shown.bs.modal', function () {
+      $("#name_source").val('');
+    $("#name_source").focus();
+  });
+
+  //Save Source
   $('#source-form').submit(function(e){
-    // const postData = {
-    //   name:$('#id_name').val()
-    // };
     var csrftoken = $("[name=csrfmiddlewaretoken]").val();
     $.ajax({
       type:'POST',
       headers:{
         "X-CSRFToken": csrftoken
       },
-      url:'http://127.0.0.1:8000/news/source_add',
+      url:'{% url "news:source_add" %}',
       data: {
-        name:$('#id_name').val()
+        name:$('#name_source').val()
       },
-      success:function(){
-        console.log("submited");
+      success:function(jResults){
+        alert("Fuente guardada exitosamente");
+        $('#name_source').val('');
+        $('#sourceModal').modal('hide')
+        mostrar();
+      },
+      error: function(data){
+        if (data.responseJSON.name!=""){
+          alert(data.responseJSON.name[0].message);
+        }
       }
     });
     e.preventDefault();
-  })
-  
-  $(document).ready(function(){
-
-    $("#id_source").change(function(){
-      $.ajax({
-        url: 'http://127.0.0.1:8000/news/source_list',
-      type: 'GET',
-      // data: $(this).serializer(),
-      success: function(response){
-
-      }
-    })
-    });
   });
+  
+  //fill select source
+  function mostrar(){
+    
+    let dropdown = $('#id_source');
+    dropdown.empty();
 
-  $('#example').on('click',sendRequest);
-
-  function sendRequest(){
     $.ajax({
-      url: 'http://127.0.0.1:8000/news/source_list',
+      url: '{% url "news:source_list" %}',
       type: 'GET',
-      // data: $(this).serializer(),
       success: function(response){
-        console.log(response)
+        // dropdown.append($('<option></option>').attr('value',null).text("select source"));
+        $.each(response, function(key, entry){
+          dropdown.append($('<option></option>').attr('value', entry.id).text(entry.name));
+                });
+        $('#loading').text('Select Source');
       }
     });
   }
 
+  //save tags
+  $('#tags-form').submit(function(e){
+    var bac = $("#id_tags").val();
+    var csrftoken = $("[name=csrfmiddlewaretoken]").val();
+    $.ajax({
+      type:'POST',
+      headers:{
+        "X-CSRFToken": csrftoken
+      },
+      url:'{% url "news:tags_add" %}',
+      data: {
+        name:$('#name_tag').val()
+      },
+      success:function(jResults){
+        alert("Tag guardado exitosamente");
+        $('#name_tag').val('');
+        $('#tagsModal').modal('hide')
+        tagslist(bac);
+        let dropdownT = $('#id_tags');
+      },
+      error: function(data){
+        if (data.responseJSON.name!=""){
+          alert(data.responseJSON.name[0].message);
+        }
+      }
+    });
+    e.preventDefault();
+  });
+
+  // $('#btnTags').click(function(){
+  //   console.log('btn');
+  //   //only do something if numbers are selected
+  //   if( $('#id_source :selected').length > 0){
+  //       //build an array of selected values
+  //       var selectednumbers = [];
+  //       $('#id_source :selected').each(function(i, selected) {
+  //           selectednumbers[i] = $(selected).val();
+  //           console.log(selectednumbers[i]+" - ");
+  //       });
+  //       console.log(selectednumbers);
+  //       //post data to handler script. note the JSON.stringify call
+  //       // $.ajax({
+  //       //     url: 'my_handler_script.php',
+  //       //     data: {'selectednumbers':JSON.stringify(selectednumbers)},
+  //       //     type: 'POST',
+  //       //     success: function(data) {
+  //       //       alert('Success!');
+  //       //     }
+  //       // });
+  //   }
+  // });
+
+  //fill select tags
+  function tagslist(bac){
+    let dropdownT = $('#id_tags');
+    dropdownT.empty();
+    console.log(bac);
+    $.ajax({
+      url: '{% url "news:tags_list" %}',
+      type: 'GET',
+      success: function(response){
+        if (bac==""){
+          $.each(response, function(key, entry){
+          // console.log("valor: "+element);
+          dropdownT.append($('<option></option>').attr('value', entry.id).text(entry.name));
+          });
+        }
+        else{
+          // bac.forEach(element => {
+          $.each(response, function(key, entry){
+            if (entry.id in bac){
+              console.log("valor: "+element);       
+              dropdownT.append($('<option selected ></option>').attr('value', entry.id).text(entry.name));
+            }
+            // if(element==entry.id){
+            //   console.log("valor: "+element);       
+            //   dropdownT.append($('<option selected ></option>').attr('value', entry.id).text(entry.name));
+              
+            // }
+            // else{
+
+            //   dropdownT.append($('<option></option>').attr('value', entry.id).text(entry.name));
+            // }
+             
+          });
+        }
+        
+        $('#loading').text('Select Source');
+      }
+    });
+  }
+
+  $('#btnTasags').on('click',function(){
+    var bac = $("#id_tags").val();
+    console.log(bac);
+  })
   
 
 
-    
+
+
+
+  //Ejemplo
+  // $('#example').on('click',sendRequest);
+
+  // function sendRequest(){
+  //   $.ajax({
+  //     url: 'http://127.0.0.1:8000/news/source_list',
+  //     type: 'GET',
+  //     // data: $(this).serializer(),
+  //     success: function(response){
+  //       console.log(response)
+  //     }
+  //   });
+  // }  
   
   $('.chzn-select').chosen();
   function setInputDate(_id){
@@ -214,7 +343,7 @@
     };
 
     data = y+"-"+m+"-"+d;
-    console.log(data);
+    // console.log(data);
     _dat.value = data;
   };
   // setInputDate("#calendar");
