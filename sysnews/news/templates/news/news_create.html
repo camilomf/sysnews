@@ -9,24 +9,6 @@ Agregar Noticia
     Agregar Noticia
   </h3>
   <form id="addNews" class="mt-2" method="post" action="{% url 'news:create' %}" enctype="multipart/form-data">{% csrf_token %}
-          
-    {% comment %}
-    <div class="form-group">
-      <label for="tags">Tags</label>
-        <div class="row">
-          <div class="col-11">
-            {{ form.tags }}
-          </div>
-          <div class="col-1">
-            <a href="{% url 'news:add_tags' %}"></a>
-            <button type="button"  class="btn btn-outline-success">
-              +
-            </button>
-          </div>
-        </div>
-    </div>
-    {% endcomment %} 
-
     <div class="form-group">
       <label for="tags">Tags</label>
       <div class="row">
@@ -90,7 +72,6 @@ Agregar Noticia
       <button class="btn btn-primary form-control" type="submit">Guardar</button>
   </form>
   <hr>
-
 
   <!-- modal source -->
   <div class="modal fade" id="sourceModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -306,6 +287,7 @@ Agregar Noticia
     var bac = $("#id_tags").val();
     console.log(bac);
   })
+  
   
 
   //Ejemplo
