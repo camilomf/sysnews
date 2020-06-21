@@ -279,22 +279,22 @@ Agregar Noticia
         }
         else{
           // bac.forEach(element => {
-          $.each(response, function(key, entry){
-            if (entry.id in bac){
-              console.log("valor: "+element);       
-              dropdownT.append($('<option selected ></option>').attr('value', entry.id).text(entry.name));
-            }
-            // if(element==entry.id){
-            //   console.log("valor: "+element);       
-            //   dropdownT.append($('<option selected ></option>').attr('value', entry.id).text(entry.name));
-              
-            // }
-            // else{
-
-            //   dropdownT.append($('<option></option>').attr('value', entry.id).text(entry.name));
-            // }
-             
-          });
+          for (var i = 0; i < bac.length ; i++) {
+            $.each(response, function(key, entry){
+              if (i<=bac.length){
+                if(bac[i] == entry.id){
+                  dropdownT.append($('<option selected></option>').attr('value', entry.id).text(entry.name));
+                  i=i+1;
+                }
+                else{
+                  dropdownT.append($('<option></option>').attr('value', entry.id).text(entry.name));
+                }
+              }
+              else{
+                dropdownT.append($('<option></option>').attr('value', entry.id).text(entry.name));
+              }
+            });
+          }
         }
         
         $('#loading').text('Select Source');
@@ -307,10 +307,6 @@ Agregar Noticia
     console.log(bac);
   })
   
-
-
-
-
 
   //Ejemplo
   // $('#example').on('click',sendRequest);
