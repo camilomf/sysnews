@@ -14,6 +14,7 @@ from django.contrib.auth.models import Group, User
 from django.http import HttpResponse, JsonResponse
 import json
 from django.core import serializers
+from news.views import tagsSerializer
 
 # Create your views here.
 class HomePageView(ListView):
@@ -97,12 +98,29 @@ def countrySerializer(country):
 
 def tagByCountry(request):
     if request.method == 'GET':
-        request_getdata = request.GET.getlist('country[]')
-        print (request_getdata)
-        return JsonResponse(request_getdata) 
+        country_ids = request.GET.getlist('country[]')
+        qs = Tags.objects.all()
+        nid = News.objects.filter(country__id__in=country_ids).values_list('id', flat=True)
+        tig = Tags.objects.filter(news__id__in=[nid]).values_list('id', flat=True)
+        tags = Tags.objects.filter(id__in=[tig])
+        tags = [ tagsSerializer(tag) for tag in tags ]
+        return HttpResponse(json.dumps(tags),content_type='application/json')
+
+   
+    
+    # if request.method == 'GET':
+    #     request_getdata = request.GET.getlist('country[]')
+    #     print (request_getdata)
+    #     return JsonResponse(request_getdata) 
         
 
 
+
+"""
+SELECT news_tags.name from news_tags WHERE news_tags.id 
+IN ( SELECT news_news_tags.tags_id from news_news_tags where news_news_tags.news_id 
+in (SELECT news_news.id FROM `news_news` WHERE news_news.country_id = 1) )
+"""
 
 # @login_required
 # def searchByCountry(request, id):

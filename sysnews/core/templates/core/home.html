@@ -116,9 +116,7 @@ Home
         <form method="POST" action="#">{% csrf_token %}         
           <div class="input-group">
             <input type="date" required name="date_conatins" class="form-control" placeholder="" value="">
-            <!-- <button type="submit" class="btn btn-info"> -->
               <span class="glyphicon glyphicon-search"><i class="fas fa-search"></i></span></span>
-            <!-- </button> -->
           </div>
           </form>
       </div>
@@ -143,19 +141,6 @@ Home
             </div>
           </div>
         </div>
-
-        <!-- <div class="form-row">
-          <div class="card-body">
-              <div class="input-group">
-                  <input class="form-control py-2 border-right-0 border" type="search" name="title_exact" placeholder="Titulo exacto ..." />
-                  <span class="input-group-append">
-                      <div class="input-group-text bg-transparent">
-                          <i class="fa fa-search"></i>
-                      </div>
-                  </span>
-              </div>
-          </div>        
-        </div> -->
         
         <div class="form-row">
           <div class="card-body">
@@ -213,8 +198,6 @@ Home
       url: '{% url "country_list" %}',
       type: 'GET',
       success: function(response){
-        console.log(response);
-        // dropdown.append($('<option></option>').attr('value',null).text("select source"));
         $.each(response, function(key, entry){
           dropdown.append($('<option></option>').attr('value', entry.id).text(entry.name));
                 });
@@ -231,8 +214,6 @@ Home
       url: '{% url "news:tags_list" %}',
       type: 'GET',
       success: function(response){
-        console.log(response);
-        // dropdown.append($('<option></option>').attr('value',null).text("select source"));
         $.each(response, function(key, entry){
           dropdown.append($('<option></option>').attr('value', entry.id).text(entry.name));
                 });
@@ -243,34 +224,24 @@ Home
   }
 
   $('#id_countries').change(function(){
-    // var params = $('#id_countries').val();
-    console.log($('#id_countries').val());
+    let dropdownT = $('#id_tags');
     $.ajax({
       type:'GET',
-      // headers:{
-      //   "X-CSRFToken": csrftoken
-      // },
       url:'{% url "tag_by_country" %}',
       data: {
         'country[]': $('#id_countries').val()
       },
       success:function(jResults){
-        alert("done")
+        dropdownT.empty();
+        $.each(jResults, function(key, entry){
+          dropdownT.append($('<option></option>').attr('value', entry.id).text(entry.name));
+                });
       },
       error: function(data){
-        alert("error");
+        console.log(data);
       }
     });
   });
-
-  // $(function() {
-  //   $('input[name="daterange"]').daterangepicker({
-  //     autoUpdateInput: false,
-  //     opens: 'left'
-  //   }, function(start, end, label) {
-  //     console.log("A new date selection was made: " + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
-  //   });
-  // });
 
   $(function() {
     $('input[name="daterange"]').daterangepicker({
@@ -287,8 +258,6 @@ Home
     });
   });
   </script>
-
-  
 
   <script type="text/javascript">
     $('.selectpicker').selectpicker({
