@@ -213,6 +213,7 @@ Home
       url: '{% url "country_list" %}',
       type: 'GET',
       success: function(response){
+        console.log(response);
         // dropdown.append($('<option></option>').attr('value',null).text("select source"));
         $.each(response, function(key, entry){
           dropdown.append($('<option></option>').attr('value', entry.id).text(entry.name));
@@ -230,15 +231,37 @@ Home
       url: '{% url "news:tags_list" %}',
       type: 'GET',
       success: function(response){
+        console.log(response);
         // dropdown.append($('<option></option>').attr('value',null).text("select source"));
         $.each(response, function(key, entry){
           dropdown.append($('<option></option>').attr('value', entry.id).text(entry.name));
                 });
+          
         $('#loading').text('Select Source');
       }
     });
   }
 
+  $('#id_countries').change(function(){
+    // var params = $('#id_countries').val();
+    console.log($('#id_countries').val());
+    $.ajax({
+      type:'GET',
+      // headers:{
+      //   "X-CSRFToken": csrftoken
+      // },
+      url:'{% url "tag_by_country" %}',
+      data: {
+        'country[]': $('#id_countries').val()
+      },
+      success:function(jResults){
+        alert("done")
+      },
+      error: function(data){
+        alert("error");
+      }
+    });
+  });
 
   // $(function() {
   //   $('input[name="daterange"]').daterangepicker({

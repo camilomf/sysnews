@@ -126,3 +126,4 @@ def tagsAdd(request):
             return JsonResponse({"message":"Successfully"})
         else:
             return HttpResponse(form.errors.as_json(), status = 400, content_type='application/json')
+

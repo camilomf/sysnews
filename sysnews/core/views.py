@@ -95,6 +95,12 @@ def countryList(request):
 def countrySerializer(country):
     return {'id':country.id,'name':country.name}
 
+def tagByCountry(request):
+    if request.method == 'GET':
+        request_getdata = request.GET.getlist('country[]')
+        print (request_getdata)
+        return JsonResponse(request_getdata) 
+        
 
 
 
