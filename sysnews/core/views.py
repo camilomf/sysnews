@@ -61,7 +61,9 @@ def searchFilter(request):
 
     if is_valid_queryparam(tags_query):
         print ("tags")
-        qs = qs.filter(tags__in=tags_query)
+        for q in tags_query:
+            qs = qs.filter(tags__id=q)
+            print (qs)
 
     if is_valid_queryparam(title_contains_query):
         print ("title")
