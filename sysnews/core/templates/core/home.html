@@ -183,6 +183,11 @@ Home
 {% block script %}
 
 <script>
+
+
+var bandC = true;
+var bandT = true;
+
   $(document).ready(function(){
     $('#id_countries').select2();
     $('#id_tags').select2();
@@ -223,9 +228,21 @@ Home
     });
   }
 
+  var a = $('#id_countries').val()
+  var b = $('#id_tags').val()
+
+  
   $('#id_countries').change(function(){
+
+    var a = $('#id_countries').val()
+    var b = $('#id_tags').val()
+    console.log(a);
+    console.log(b);
+
+    if (a!='' && b==''){
+
     let dropdownT = $('#id_tags');
-    $.ajax({
+      $.ajax({
       type:'GET',
       url:'{% url "tag_by_country" %}',
       data: {
@@ -233,21 +250,67 @@ Home
       },
       success:function(jResults){
         dropdownT.empty();
-        $.each(jResults, function(key, entry){
+        if (jResults == '' ){
+          fillTags();
+        }
+        else{
+          $.each(jResults, function(key, entry){
           dropdownT.append($('<option></option>').attr('value', entry.id).text(entry.name));
                 });
+        }
       },
       error: function(data){
         console.log(data);
       }
     });
+
+  }
+
+  });
+
+  $('#id_tags').change(function(){
+
+    var a = $('#id_countries').val()
+    var b = $('#id_tags').val()
+    console.log(a);
+    console.log(b);
+    
+    if(a=='' && b!='' ){
+
+    let dropdownT = $('#id_countries');
+      $.ajax({
+      type:'GET',
+      url:'{% url "country_by_tag" %}',
+      data: {
+        'tag[]': $('#id_tags').val()
+      },
+      success:function(jResults){
+        dropdownT.empty();
+        if(jResults == ''){
+          fillCountry();
+        }
+        else{
+          $.each(jResults, function(key, entry){
+          dropdownT.append($('<option></option>').attr('value', entry.id).text(entry.name));
+                });
+          console.log(bandT);
+        }
+      },
+      error: function(data){
+        console.log(data);
+      }
+    });
+
+  }
+
   });
 
   $(function() {
     $('input[name="daterange"]').daterangepicker({
       autoUpdateInput: false,
       locale: {
-        cancelLabel: 'Clear'
+        applyLabel: 'Aplicar',
+        cancelLabel: 'Cancelar'
       }
     });
     $('input[name="daterange"]').on('apply.daterangepicker', function(ev, picker) {

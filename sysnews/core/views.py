@@ -96,6 +96,7 @@ def countryList(request):
 def countrySerializer(country):
     return {'id':country.id,'name':country.name}
 
+@login_required
 def tagByCountry(request):
     if request.method == 'GET':
         country_ids = request.GET.getlist('country[]')
@@ -106,12 +107,17 @@ def tagByCountry(request):
         tags = [ tagsSerializer(tag) for tag in tags ]
         return HttpResponse(json.dumps(tags),content_type='application/json')
 
-   
-    
-    # if request.method == 'GET':
-    #     request_getdata = request.GET.getlist('country[]')
-    #     print (request_getdata)
-    #     return JsonResponse(request_getdata) 
+@login_required
+def countryByTag(request):
+    if request.method == 'GET':
+        tag_ids = request.GET.getlist('tag[]')
+        qs = Country.objects.all()
+        nid = News.objects.filter(tags__id__in=tag_ids).values_list('id', flat=True)
+        tig = News.objects.filter(id__in=[nid]).values_list('country_id').distinct()
+        countries = Country.objects.filter(id__in=[tig])
+        countries = [ countrySerializer(country) for country in countries ]
+        return HttpResponse(json.dumps(countries),content_type='application/json')
+
         
 
 
@@ -133,31 +139,6 @@ in (SELECT news_news.id FROM `news_news` WHERE news_news.country_id = 1) )
 #     # context['editors'] = User.objects.filter(groups=2)
 #     return render(request, 'core/home.html', context)
 
-
-# @login_required
-# def searchByTags(request, **kwargs):
-#     tags = request.POST.getlist('search_by_tags')
-#     print (tags)
-#     # context = {}
-#     # context['countries'] = Country.objects.all()
-#     # context['tags'] = Tags.objects.all()
-#     if len(tags) == 1:
-#         print ("1")
-#         news = News.objects.filter(tags=tags[0])    
-#         context = context_permanent(news)
-#         return render(request, 'core/home.html', context)
-#     if len(tags) == 2:
-#         print ("2")
-#         news = News.objects.filter(Q(tags__id__icontains=tags[0]) and Q(tags__id__icontains=tags[1]))
-#         print (news)
-#         context = context_permanent(news)
-#         return render(request, 'core/home.html', context)
-#     if len(tags) == 3:
-#         print ("3")
-#         news = News.objects.filter(Q(tags__id__icontains=tags[0]) and Q(tags__id__icontains=tags[1]) and Q(tags__id__contains=tags[2]))
-#         print (news)
-#         context = context_permanent(news)
-#         return render(request, 'core/home.html', context)
     
 # @login_required
 # def searchByUser(request, **kwargs):
@@ -168,11 +149,3 @@ in (SELECT news_news.id FROM `news_news` WHERE news_news.country_id = 1) )
 #     # context['news_list'] = news
 #     # context['countries'] = Country.objects.all()
 #     return render(request, 'core/home.html', context)
-
-# def context_permanent(news):
-#     context = {}
-#     context['list_news'] = news
-#     context['countries'] = Country.objects.all()
-#     context['tags'] = Tags.objects.all()
-#     context['users'] = User.objects.filter(groups=2)
-#     return context
