@@ -25,9 +25,9 @@ class NewsForm(forms.ModelForm):
             'headline' : forms.Textarea(attrs={'class':'form-control','rows':3,'required':'required'}),
             'explanation' : forms.Textarea(attrs={'class':'form-control','rows':20,'required':'required'}),
             'publication_date' : forms.DateInput(format=('%d/%m/%Y'), attrs={'class':'form-control','type':'date','required':'required'}),
-            'tags' : forms.SelectMultiple(attrs={'class':'form-control chzn-select','required':'required'}),
+            'tags' : forms.SelectMultiple(attrs={'class':'form-control','required':'required'}),
             'image' : forms.ClearableFileInput(attrs={'class':'form-control-file','required':'required'}),
-            'source' : forms.Select(attrs={'class':'form-control chzn-select','required':'required'}),
+            'source' : forms.Select(attrs={'class':'form-control','required':'required'}),
             'country' : forms.Select(attrs={'class':'form-control','required':'required'}),
         }
 

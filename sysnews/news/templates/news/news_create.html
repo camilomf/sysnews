@@ -220,29 +220,6 @@ Agregar Noticia
     e.preventDefault();
   });
 
-  // $('#btnTags').click(function(){
-  //   console.log('btn');
-  //   //only do something if numbers are selected
-  //   if( $('#id_source :selected').length > 0){
-  //       //build an array of selected values
-  //       var selectednumbers = [];
-  //       $('#id_source :selected').each(function(i, selected) {
-  //           selectednumbers[i] = $(selected).val();
-  //           console.log(selectednumbers[i]+" - ");
-  //       });
-  //       console.log(selectednumbers);
-  //       //post data to handler script. note the JSON.stringify call
-  //       // $.ajax({
-  //       //     url: 'my_handler_script.php',
-  //       //     data: {'selectednumbers':JSON.stringify(selectednumbers)},
-  //       //     type: 'POST',
-  //       //     success: function(data) {
-  //       //       alert('Success!');
-  //       //     }
-  //       // });
-  //   }
-  // });
-
   //fill select tags
   function tagslist(bac){
     let dropdownT = $('#id_tags');
@@ -287,23 +264,6 @@ Agregar Noticia
     var bac = $("#id_tags").val();
     console.log(bac);
   })
-  
-  
-
-  //Ejemplo
-  // $('#example').on('click',sendRequest);
-
-  // function sendRequest(){
-  //   $.ajax({
-  //     url: 'http://127.0.0.1:8000/news/source_list',
-  //     type: 'GET',
-  //     // data: $(this).serializer(),
-  //     success: function(response){
-  //       console.log(response)
-  //     }
-  //   });
-  // }  
-  
   
   function setInputDate(_id){
     var _dat = document.querySelector(_id);

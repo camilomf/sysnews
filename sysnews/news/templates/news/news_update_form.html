@@ -36,7 +36,11 @@
 
       <!-- Post Content -->
       <p class="lead" align="justify">Tags: 
-        {{ form.tags }}
+        <select name="tags" id="id_tags" multiple="" class="form-control">
+        </select>
+        <button type="button" id="btnTags" class="btn btn-outline-success" data-toggle="modal" data-target="#tagsModal">
+          +
+        </button>
       </p>
       
       <blockquote class="blockquote">
@@ -51,8 +55,21 @@
         <footer class="blockquote-footer">
           <cite title="Source Title">{{ form.url }}</cite>
           <p class="lead">
-            Fuente: 
-          <label>{{ form.source }}</label>
+            <div class="form-group">
+              <label for="fuente">Fuente</label>
+              <div class="row" id="source-div">
+                <div class="col-11">
+                  <select name="source" id="id_source" class="form-control" required="required">
+                    <option value="" id="loading">---------</option>
+                  </select>
+                </div>
+                <div class="col-1">
+                    <button type="button"  class="btn btn-outline-success" data-toggle="modal" data-target="#sourceModal">
+                      +
+                    </button>
+                </div>
+              </div>
+            </div>
           </p>
         </footer>
     </blockquote>
@@ -65,76 +82,208 @@
 
     </div>
 
-    {% comment %}
-    <!-- Sidebar Widgets Column -->
-    <div class="col-md-4">
 
-        <!-- Search Widget -->
-        <div class="card my-4">
-          <h5 class="card-header">Search</h5>
-          <div class="card-body">
-            <div class="input-group">
-              <input type="text" class="form-control" placeholder="Search for...">
-              <span class="input-group-btn">
-                <button class="btn btn-secondary" type="button">Go!</button>
-              </span>
+  <!-- modal tags -->
+  <div class="modal fade" id="tagsModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Agregar Tags</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form id="tags-form" class="mt-2" method="post">{% csrf_token %}
+            <div class="form-group">
+              <label for="nombre">Nombre:</label>
+              <input type="text" id="name_tag" class="form-control">
+                <!-- {{ form_source.name }} -->
             </div>
-          </div>
-        </div>
-  
-        <!-- Categories Widget -->
-        <div class="card my-4">
-          <h5 class="card-header">Categories</h5>
-          <div class="card-body">
-            <div class="row">
-              <div class="col-lg-6">
-                <ul class="list-unstyled mb-0">
-                  <li>
-                    <a href="#">Web Design</a>
-                  </li>
-                  <li>
-                    <a href="#">HTML</a>
-                  </li>
-                  <li>
-                    <a href="#">Freebies</a>
-                  </li>
-                </ul>
-              </div>
-              <div class="col-lg-6">
-                <ul class="list-unstyled mb-0">
-                  <li>
-                    <a href="#">JavaScript</a>
-                  </li>
-                  <li>
-                    <a href="#">CSS</a>
-                  </li>
-                  <li>
-                    <a href="#">Tutorials</a>
-                  </li>
-                </ul>
-              </div>
+            <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary">Save changes</button>
             </div>
-          </div>
+          </form>
         </div>
-  
-        <!-- Side Widget -->
-        <div class="card my-4">
-          <h5 class="card-header">Side Widget</h5>
-          <div class="card-body">
-            You can put anything you want inside of these side widgets. They are easy to use, and feature the new Bootstrap 4 card containers!
-          </div>
-        </div>
-  
       </div>
-    {% endcomment %}
+    </div>
+  </div>
 
+  <!-- modal source -->
+  <div class="modal fade" id="sourceModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Agregar Fuente</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form id="source-form" class="mt-2" method="post">{% csrf_token %}
+              <div class="form-group">
+                <label for="nombre">Nombre:</label>
+                <input type="text" id="name_source" class="form-control">
+              </div>
+              <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary">Save changes</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+  </div>
+  
+  
+  <select name="tags" multiple id="tags_selected" hidden>
+    {% for tag in news.tags.all %}
+    <option value={{ tag.id }} selected>{{ tag.name }}</option>          
+    {% endfor %}
+  </select>
 
-    
+  <select name="source" id="source_selected" hidden>
+    <option value={{ news.source.id }} selected>{{ news.source.name }}</option>   
+  </select>
+
   </div>
 {% endblock content %}
 
 {% block script %}
 <script>
+
+$(document).ready(function(){
+    var bac = $("#tags_selected").val();
+    var s  = $("#source_selected").val()
+    console.log(s);
+    $('#id_tags').select2();
+    $('#id_source').select2();
+    mostrar(s);
+    tagslist(bac);
+    
+  });
+
+  
+
+
+  //fill select tags
+  function tagslist(bac){
+    let dropdownT = $('#id_tags');
+    dropdownT.empty();
+    $.ajax({
+      url: '{% url "news:tags_list" %}',
+      type: 'GET',
+      success: function(response){
+        if (bac==""){
+          $.each(response, function(key, entry){
+          // console.log("valor: "+element);
+          dropdownT.append($('<option></option>').attr('value', entry.id).text(entry.name));
+          });
+        }
+        else{
+          // bac.forEach(element => {
+          for (var i = 0; i < bac.length ; i++) {
+            $.each(response, function(key, entry){
+              if (i<=bac.length){
+                if(bac[i] == entry.id){
+                  dropdownT.append($('<option selected></option>').attr('value', entry.id).text(entry.name));
+                  i=i+1;
+                }
+                else{
+                  dropdownT.append($('<option></option>').attr('value', entry.id).text(entry.name));
+                }
+              }
+              else{
+                dropdownT.append($('<option></option>').attr('value', entry.id).text(entry.name));
+              }
+            });
+          }
+        }
+      }
+    });
+  }
+
+  //save tags
+  $('#tags-form').submit(function(e){
+    var bac = $("#tags_selected").val();
+    let dropdownT = $('#id_tags');
+    var csrftoken = $("[name=csrfmiddlewaretoken]").val();
+    $.ajax({
+      type:'POST',
+      headers:{
+        "X-CSRFToken": csrftoken
+      },
+      url:'{% url "news:tags_add" %}',
+      data: {
+        name:$('#name_tag').val()
+      },
+      success:function(jResults){
+        alert("Tag guardado exitosamente");
+        $('#name_tag').val('');
+        $('#tagsModal').modal('hide')
+        tagslist(bac);
+        let dropdownT = $('#id_tags');
+      },
+      error: function(data){
+        if (data){
+          alert(data.responseJSON.name[0].message);
+        }
+      }
+    });
+    e.preventDefault();
+  });
+
+  //fill select source
+  function mostrar(s){
+    let dropdown = $('#id_source');
+    dropdown.empty();
+    $.ajax({
+      url: '{% url "news:source_list" %}',
+      type: 'GET',
+      success: function(response){
+        // dropdown.append($('<option></option>').attr('value',null).text("select source"));
+        $.each(response, function(key, entry){
+          if (s == entry.id){
+            dropdown.append($('<option selected ></option>').attr('value', entry.id).text(entry.name));     
+          }
+          else{
+            dropdown.append($('<option></option>').attr('value', entry.id).text(entry.name));  
+          }
+        });
+      }
+    });
+  }
+
+  //Save Source
+  $('#source-form').submit(function(e){
+    var s = '';
+    var csrftoken = $("[name=csrfmiddlewaretoken]").val();
+    $.ajax({
+      type:'POST',
+      headers:{
+        "X-CSRFToken": csrftoken
+      },
+      url:'{% url "news:source_add" %}',
+      data: {
+        name:$('#name_source').val()
+      },
+      success:function(jResults){
+        alert("Fuente guardada exitosamente");
+        $('#name_source').val('');
+        $('#sourceModal').modal('hide')
+        s=$('#name_source').val(); 
+        mostrar(s);
+      },
+      error: function(data){
+        if (data.responseJSON.name!=""){
+          alert(data.responseJSON.name[0].message);
+        }
+      }
+    });
+    e.preventDefault();
+  });
+
   function setInputDate(_id){
     var _dat = document.querySelector(_id);
     var hoy = new Date(),
@@ -151,13 +300,9 @@
     };
 
     data = y+"-"+m+"-"+d;
-    console.log(data);
     _dat.value = data;
   };
   // setInputDate("#calendar");
   setInputDate("#publication_date");
   </script>
-<script>
-  $('.chzn-select').chosen();
-</script>
 {% endblock script %}
